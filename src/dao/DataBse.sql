@@ -9,3 +9,9 @@ create table Abonnement (
     dateFin DATE,
     statut ENUM('ACTIVE', 'SUSPENDU', 'RESILIE') NOT NULL
 );
+
+create table abonnement_avec_engagement (
+    id VARCHAR(36) PRIMARY KEY,
+    dureeEngagementMois INT NOT NULL,
+    FOREIGN KEY (id) REFERENCES abonnement(id) ON DELETE CASCADE
+);
