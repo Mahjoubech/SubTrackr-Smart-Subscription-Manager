@@ -15,3 +15,7 @@ create table abonnement_avec_engagement (
     dureeEngagementMois INT NOT NULL,
     FOREIGN KEY (id) REFERENCES abonnement(id) ON DELETE CASCADE
 );
+create table abonnement_sans_engagement (
+    id VARCHAR(36) PRIMARY KEY,
+    FOREIGN KEY (id) REFERENCES abonnement(id) ON DELETE CASCADE
+);
