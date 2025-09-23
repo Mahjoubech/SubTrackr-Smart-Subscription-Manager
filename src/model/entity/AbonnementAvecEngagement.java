@@ -9,5 +9,13 @@ public class AbonnementAvecEngagement extends Abonnement{
         super(nomService, montantMensuel, dateDebut, dateFin, statut);
         this.dureeEngagementMois = dureeEngagementMois;
     }
+    public int getDureeEngagementMois() { return dureeEngagementMois; }
+    public void setDureeEngagementMois(int dureeEngagementMois) { this.dureeEngagementMois = dureeEngagementMois; }
 
+    @Override
+    public String toString() {
+        return super.toString() + " AbonnementAvecEngagement{" +
+                "dureeEngagementMois=" + dureeEngagementMois +
+                '}';
+    }
 }
