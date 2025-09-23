@@ -35,5 +35,15 @@ public abstract class Abonnement {
     public StatusAbonnement getStatut() { return statut; }
     public void setStatut(StatusAbonnement statut) { this.statut = statut; }
 
-
+    @Override
+    public String toString() {
+        return "Abonnement{" +
+                "id='" + id + '\'' +
+                ", nomService='" + nomService + '\'' +
+                ", montantMensuel=" + montantMensuel +
+                ", dateDebut=" + dateDebut +
+                ", dateFin=" + dateFin +
+                ", statut=" + statut +
+                '}';
+    }
 }
