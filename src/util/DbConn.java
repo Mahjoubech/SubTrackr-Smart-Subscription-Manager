@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DbConn {
-    public static DbConn instance;
+    public static DbConn instant;
     public Connection conn;
     private static final String url = "jdbc:mysql://localhost:3306/Abonnment";
     private static final String user = "root";
@@ -22,7 +22,7 @@ public class DbConn {
     }
 
     public static synchronized DbConn getInstance() throws SQLException {
-        if (instance == null || instance.getConn().isClosed()) {
+        if (instant == null || instant.getConn().isClosed()) {
             instant = new DbConn();
         }
         return instant;
@@ -35,6 +35,3 @@ public class DbConn {
 }
 
 
-
-}
-}
