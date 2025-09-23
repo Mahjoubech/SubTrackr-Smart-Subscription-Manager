@@ -1,4 +1,9 @@
 package dao;
 
-public class PaimentDao {
+import model.entity.Paiment;
+
+public class PaimentDao implements CrudDao<Paiment> {
+    public void create(Paiment paiment){
+
+    }
 }

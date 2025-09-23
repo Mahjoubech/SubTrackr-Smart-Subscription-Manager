@@ -46,4 +46,8 @@ public abstract class Abonnement {
                 ", statut=" + statut +
                 '}';
     }
+
+    public void setId(String string) {
+        this.id = string;
+    }
 }

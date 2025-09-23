@@ -31,3 +31,6 @@ create table paiement (
     statut ENUM('PAYE', 'NON_PAYE', 'EN_RETARD') NOT NULL,
     FOREIGN KEY (idAbonnement) REFERENCES abonnement(id) ON DELETE CASCADE
 );
+
+alter table abonnement
+add column typeAbonnenment enum('AVEC_ENGAG' , 'SANS_ENGAG') not null default 'SANS_ENGAG';
