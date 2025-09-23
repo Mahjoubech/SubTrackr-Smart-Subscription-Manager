@@ -1,6 +1,6 @@
 package model.enums;
 
-public enum StatutPaiement {
+public enum StatusPaiement {
         PAYE,
         NON_PAYE,
         EN_RETARD
