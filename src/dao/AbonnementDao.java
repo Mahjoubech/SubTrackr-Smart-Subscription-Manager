@@ -57,5 +57,40 @@ public class AbonnementDao implements CrudDao<Abonnement> {
      };
 
   }
+  public void update(Abonnement abonnement) {
+        String requet = "UPDATE abonnement SET nomService=?, montantMensuel=?, dateDebut=?, dateFin=?, statut=?, typeAbonnenment=? WHERE id=?";
+      try(PreparedStatement stmt = conn.prepareStatement(requet)){
+          stmt.setString(1 , abonnement.getNomService());
+          stmt.setDouble(2 , abonnement.getMontantMensuel());
+          stmt.setDate(3 , Date.valueOf(abonnement.getDateDebut()));
+          stmt.setDate(4 , abonnement.getDateFin() != null ? Date.valueOf(abonnement.getDateFin()) : null);
+          stmt.setString(5 , abonnement.getStatut().name());
+          String type = abonnement instanceof AbonnementAvecEngagement ? "AVEC_ENGAG" : "SANS_ENGAG";
+          stmt.setString(6, type);
+          stmt.setString(7 , abonnement.getId());
+          stmt.executeUpdate();
+          if(abonnement instanceof AbonnementAvecEngagement){
+              AbonnementAvecEngagement AbnAvcEg = (AbonnementAvecEngagement) abonnement;
+              String AbnSql = "UPDATE abonnement_avec_engagement SET dureeEngagementMois=? WHERE id=?";
+              try (PreparedStatement stmt2 = conn.prepareStatement(AbnSql)) {
+                  stmt2.setString(1, AbnAvcEg.getId());
+                  stmt2.setInt(2, AbnAvcEg.getDureeEngagementMois());
+                  stmt2.executeUpdate();
+              } catch (SQLException e) {
+                  throw new RuntimeException("Erreur lors de la mise à jour de l'abonnement: " + e.getMessage());
+              }
+          }else if (abonnement instanceof AbonnementSansEngagement) {
+              String sansSql = "UPDATE abonnement_avec_engagement SET dureeEngagementMois=? WHERE id=?";
+              try (PreparedStatement stmt3 = conn.prepareStatement(sansSql)) {
+                  stmt3.setString(1, abonnement.getId());
+                  stmt3.executeUpdate();
+              } catch (SQLException e) {
+                  throw new RuntimeException("Erreur lors de la mise à jour de l'engagement: " + e.getMessage());
+              }
+          }
+      }catch (SQLException ex){
+          throw new RuntimeException(ex);
+      };
+  }
 
 }
