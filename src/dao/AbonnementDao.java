@@ -3,11 +3,13 @@ import model.entity.Abonnement;
 import DataBase.DbConn;
 import model.entity.AbonnementAvecEngagement;
 import model.entity.AbonnementSansEngagement;
+import model.enums.StatusAbonnement;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import  java.sql.SQLException;
+import java.sql.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class AbonnementDao implements CrudDao<Abonnement> {
     private final Connection conn;
@@ -21,8 +23,9 @@ public class AbonnementDao implements CrudDao<Abonnement> {
 
 
     }
+    @Override
   public void create(Abonnement abonnement) {
-     String requet = "insert int abonnement (id, nomService, montantMensuel, dateDebut, dateFin, statut, typeAbonnenment) VALUES (?, ?, ?, ?, ?, ?, ?)";
+     String requet = "insert into abonnement (id, nomService, montantMensuel, dateDebut, dateFin, statut, typeAbonnenment) VALUES (?, ?, ?, ?, ?, ?, ?)";
      try(PreparedStatement stmt = conn.prepareStatement(requet)){
          stmt.setString(1 , abonnement.getId());
          stmt.setString(2 , abonnement.getNomService());
@@ -57,6 +60,7 @@ public class AbonnementDao implements CrudDao<Abonnement> {
      };
 
   }
+  @Override
   public void update(Abonnement abonnement) {
         String requet = "UPDATE abonnement SET nomService=?, montantMensuel=?, dateDebut=?, dateFin=?, statut=?, typeAbonnenment=? WHERE id=?";
       try(PreparedStatement stmt = conn.prepareStatement(requet)){
@@ -92,5 +96,78 @@ public class AbonnementDao implements CrudDao<Abonnement> {
           throw new RuntimeException(ex);
       };
   }
+  @Override
+  public void delete(String id) {
+        String requet = "DELETE FROM abonnement WHERE id=?";
+        try(PreparedStatement stmt = conn.prepareStatement(requet)){
+            stmt.setString(1, id);
+            stmt.executeUpdate();
+        }catch (SQLException ex){
+            throw new RuntimeException("Erreur lors de la suppression de l'abonnement: " , ex);
+        }
+  }
+  @Override
+  public Optional<Abonnement> findById(String id) {
+        String requet = "SELECT * FROM abonnement WHERE id=?";
+        try(PreparedStatement stmt = conn.prepareStatement(requet)){
+            stmt.setString(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next()){
+                return Optional.of(mapAbonnement(rs));
+            }
+        }catch (SQLException ex){
+            throw new RuntimeException("Erreur lors de la recherche de l'abonnement: " + ex.getMessage());
+        }
+        return Optional.empty();
+  }
+ @Override
+ public List<Abonnement> findAll(){
+        String requet = "SELECT * FROM abonnement";
+     List<Abonnement> abonnements = new ArrayList<>();
+        try(PreparedStatement stmt = conn.prepareStatement(requet)){
+            stmt.executeQuery();
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next()){
+                abonnements.add(mapAbonnement(rs));
+            }
+        }catch (SQLException ex){
+            throw new RuntimeException("Erreur lors de get all Abonnements: " + ex.getMessage());
+        };
+        return abonnements;
+ }
 
+
+//add methode maoAbonnement pour mapping abonnmnt
+    private Abonnement mapAbonnement(ResultSet rs) throws SQLException {
+        String id = rs.getString("id");
+        String nomService = rs.getString("nomService");
+        double montantMensuel = rs.getDouble("montantMensuel");
+        LocalDate dateDebut = rs.getDate("dateDebut").toLocalDate();
+        LocalDate dateFin = rs.getDate("dateFin") != null ? rs.getDate("dateFin").toLocalDate() : null;
+        StatusAbonnement statut = StatusAbonnement.valueOf(rs.getString("statut"));
+        String type = rs.getString("typeAbonnenment");
+
+        if ("AVEC_ENGAG".equals(type)) {
+            String engSql = "SELECT dureeEngagementMois FROM abonnement_avec_engagement WHERE id = ?";
+            try (PreparedStatement ps = conn.prepareStatement(engSql)) {
+                ps.setString(1, id);
+                ResultSet ers = ps.executeQuery();
+                int duree = 0;
+                if (ers.next()) {
+                    duree = ers.getInt("dureeEngagementMois");
+                }
+                return new AbonnementAvecEngagement(id,nomService, montantMensuel, dateDebut, dateFin, statut, duree);
+            }
+        } else {
+            return new AbonnementSansEngagement(nomService, montantMensuel, dateDebut, dateFin, statut);
+        }
+    }
+    public void delete(){
+        String requet = "DELETE FROM abonnement";
+        try(PreparedStatement stmt = conn.prepareStatement(requet)){
+            stmt.executeUpdate();
+        }catch (SQLException ex){
+            throw new RuntimeException("Erreur lors de la delete abonnement: " + ex.getMessage());
+        }
+    }
 }
