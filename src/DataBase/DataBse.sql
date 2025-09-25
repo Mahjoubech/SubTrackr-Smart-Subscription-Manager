@@ -34,3 +34,13 @@ create table paiement (
 
 alter table abonnement
 add column typeAbonnenment enum('AVEC_ENGAG' , 'SANS_ENGAG') not null default 'SANS_ENGAG';
+
+create table paiement (
+    idPaiement VARCHAR(36) PRIMARY KEY,
+    idAbonnement VARCHAR(36) NOT NULL,
+    dateEcheance DATE NOT NULL,
+    datePaiement DATE,
+    typePaiement VARCHAR(50) NOT NULL,
+    statut ENUM('PAYE', 'NON_PAYE', 'EN_RETARD') NOT NULL,
+    FOREIGN KEY (idAbonnement) REFERENCES abonnement(id) ON DELETE CASCADE
+);
