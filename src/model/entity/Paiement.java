@@ -2,7 +2,6 @@ package model.entity;
 import model.enums.StatusPaiement;
 import java.time.LocalDate;
 import java.util.UUID;
-
 public class Paiment {
     private String idPaiement;
     private String idAbonnement;
