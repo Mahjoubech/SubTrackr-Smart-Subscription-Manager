@@ -4,7 +4,6 @@ import DataBase.DbConn;
 import model.entity.AbonnementAvecEngagement;
 import model.entity.AbonnementSansEngagement;
 import model.enums.StatusAbonnement;
-
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -135,8 +134,6 @@ public class AbonnementDao implements CrudDao<Abonnement> {
         };
         return abonnements;
  }
-
-
 //add methode maoAbonnement pour mapping abonnmnt
     private Abonnement mapAbonnement(ResultSet rs) throws SQLException {
         String id = rs.getString("id");

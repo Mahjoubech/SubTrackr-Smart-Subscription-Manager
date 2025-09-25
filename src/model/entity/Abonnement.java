@@ -11,6 +11,7 @@ public abstract class Abonnement {
     protected LocalDate dateDebut;
     protected LocalDate dateFin;
     protected StatusAbonnement statut;
+    public Abonnement() {}
     public Abonnement(String nomService, double montantMensuel, LocalDate dateDebut, LocalDate dateFin, StatusAbonnement statut) {
           this.id = UUID.randomUUID().toString();
           this.nomService = nomService;
@@ -53,6 +54,7 @@ public abstract class Abonnement {
                 ", dateDebut=" + dateDebut +
                 ", dateFin=" + dateFin +
                 ", statut=" + statut +
+                ", Type = " + getClass().getSimpleName() +
                 '}';
     }
 

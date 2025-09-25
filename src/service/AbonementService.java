@@ -2,6 +2,7 @@ package service;
 import dao.AbonnementDao;
 import model.entity.Abonnement;
 import model.enums.StatusAbonnement;
+import java.util.stream.*;
 
 import java.util.List;
 import java.util.Map;
@@ -15,4 +16,12 @@ public class AbonementService {
     public void deleteAbonnement(Abonnement abonnement) {abonnementDao.delete(abonnement.getId());}
     public Optional<Abonnement> getById(String id){return abonnementDao.findById(id);}
     public List<Abonnement> getAll(){return abonnementDao.findAll();}
+    public List<Abonnement> getByActiveAbonnement(){
+        return abonnementDao.findAll().stream()
+                .filter(abn -> abn.getStatut().equals(StatusAbonnement.ACTIVE)).collect(Collectors.toList());
+    }
+    public List<Abonnement> getByTypeAbonnement(String typeAbonnement){
+        return abonnementDao.findAll().stream()
+                .filter(abn ->  abn.getClass().getSimpleName().equals(typeAbonnement) ).collect(Collectors.toList());
+    }
 }
