@@ -2,7 +2,7 @@ package model.entity;
 import model.enums.StatusPaiement;
 import java.time.LocalDate;
 import java.util.UUID;
-public class Paiment {
+public class Paiement {
     private String idPaiement;
     private String idAbonnement;
     private LocalDate dateEcheance;
@@ -10,8 +10,16 @@ public class Paiment {
     private String typePaiement;
     private StatusPaiement statut;
 
-    public Paiment(String idAbonnement, LocalDate dateEcheance, LocalDate datePaiement, String typePaiement, StatusPaiement statut) {
+    public Paiement(String idAbonnement, LocalDate dateEcheance, LocalDate datePaiement, String typePaiement, StatusPaiement statut) {
         this.idPaiement = UUID.randomUUID().toString();
+        this.idAbonnement = idAbonnement;
+        this.dateEcheance = dateEcheance;
+        this.datePaiement = datePaiement;
+        this.typePaiement = typePaiement;
+        this.statut = statut;
+    }
+    public Paiement( String idPaiement , String idAbonnement, LocalDate dateEcheance, LocalDate datePaiement, String typePaiement, StatusPaiement statut) {
+        this.idPaiement = idPaiement;
         this.idAbonnement = idAbonnement;
         this.dateEcheance = dateEcheance;
         this.datePaiement = datePaiement;
