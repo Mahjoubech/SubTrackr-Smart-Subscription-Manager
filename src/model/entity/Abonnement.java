@@ -12,23 +12,14 @@ public abstract class Abonnement {
     protected LocalDate dateFin;
     protected StatusAbonnement statut;
     public Abonnement() {}
-    public Abonnement(String nomService, double montantMensuel, LocalDate dateDebut, LocalDate dateFin, StatusAbonnement statut) {
-          this.id = UUID.randomUUID().toString();
+    public Abonnement(String id ,String nomService, double montantMensuel, LocalDate dateDebut, LocalDate dateFin, StatusAbonnement statut) {
+          this.id = id;
           this.nomService = nomService;
           this.montantMensuel = montantMensuel;
           this.dateDebut = dateDebut;
           this.dateFin = dateFin;
           this.statut = statut;
     }
-    public Abonnement(String id ,String nomService, double montantMensuel, LocalDate dateDebut, LocalDate dateFin, StatusAbonnement statut) {
-        this.id = id;
-        this.nomService = nomService;
-        this.montantMensuel = montantMensuel;
-        this.dateDebut = dateDebut;
-        this.dateFin = dateFin;
-        this.statut = statut;
-    }
-
     public String getId() { return id; }
     public String getNomService() { return nomService; }
     public void setNomService(String nomService) { this.nomService = nomService; }

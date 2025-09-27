@@ -74,21 +74,13 @@ public class AbonnementDao implements CrudDao<Abonnement> {
           stmt.executeUpdate();
           if(abonnement instanceof AbonnementAvecEngagement){
               AbonnementAvecEngagement AbnAvcEg = (AbonnementAvecEngagement) abonnement;
-              String AbnSql = "UPDATE abonnement_avec_engagement SET dureeEngagementMois=? WHERE id=?";
+              String AbnSql = "UPDATE abonnement_avec_engagement SET dureeEngagementMois=?  WHERE id=?";
               try (PreparedStatement stmt2 = conn.prepareStatement(AbnSql)) {
-                  stmt2.setString(1, AbnAvcEg.getId());
-                  stmt2.setInt(2, AbnAvcEg.getDureeEngagementMois());
+                  stmt2.setString(2, AbnAvcEg.getId());
+                  stmt2.setInt(1, AbnAvcEg.getDureeEngagementMois());
                   stmt2.executeUpdate();
               } catch (SQLException e) {
                   throw new RuntimeException("Erreur lors de la mise à jour de l'abonnement: " + e.getMessage());
-              }
-          }else if (abonnement instanceof AbonnementSansEngagement) {
-              String sansSql = "UPDATE abonnement_avec_engagement SET dureeEngagementMois=? WHERE id=?";
-              try (PreparedStatement stmt3 = conn.prepareStatement(sansSql)) {
-                  stmt3.setString(1, abonnement.getId());
-                  stmt3.executeUpdate();
-              } catch (SQLException e) {
-                  throw new RuntimeException("Erreur lors de la mise à jour de l'engagement: " + e.getMessage());
               }
           }
       }catch (SQLException ex){
@@ -156,7 +148,7 @@ public class AbonnementDao implements CrudDao<Abonnement> {
                 return new AbonnementAvecEngagement(id,nomService, montantMensuel, dateDebut, dateFin, statut, duree);
             }
         } else {
-            return new AbonnementSansEngagement(nomService, montantMensuel, dateDebut, dateFin, statut);
+            return new AbonnementSansEngagement(id ,nomService, montantMensuel, dateDebut, dateFin, statut);
         }
     }
     public void delete(){
