@@ -5,11 +5,7 @@ import java.time.LocalDate;
 public class AbonnementAvecEngagement extends Abonnement{
     private int dureeEngagementMois;
 
-    public AbonnementAvecEngagement(String nomService, double montantMensuel, LocalDate dateDebut, LocalDate dateFin, StatusAbonnement statut, int dureeEngagementMois) {
-        super(nomService, montantMensuel, dateDebut, dateFin, statut);
-        this.dureeEngagementMois = dureeEngagementMois;
-    }
-    public AbonnementAvecEngagement(String id ,String nomService, double montantMensuel, LocalDate dateDebut, LocalDate dateFin, StatusAbonnement statut, int dureeEngagementMois) {
+    public AbonnementAvecEngagement(String id , String nomService, double montantMensuel, LocalDate dateDebut, LocalDate dateFin, StatusAbonnement statut, int dureeEngagementMois) {
         super(id , nomService, montantMensuel, dateDebut, dateFin, statut);
         this.dureeEngagementMois = dureeEngagementMois;
     }
